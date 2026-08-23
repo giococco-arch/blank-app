@@ -491,7 +491,7 @@ Choose the option that creates the **highest value today**.
                     )
 
                     calculated_value = st.number_input(
-                        "Present value of Option B (€)",
+                        "Present value of Selected Option (€)",
                         min_value=0.0,
                         step=100.0,
                         format="%.2f"
