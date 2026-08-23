@@ -55,6 +55,45 @@ def count_votes(submissions, option):
 
 def instructor_page():
 
+    # =====================================
+    # INSTRUCTOR LOGIN
+    # =====================================
+
+    if "instructor_authenticated" not in st.session_state:
+        st.session_state.instructor_authenticated = False
+
+    if not st.session_state.instructor_authenticated:
+
+        st.title("🔐 Instructor Dashboard")
+
+        st.write(
+            "Enter the instructor password to access the game controls."
+        )
+
+        instructor_password = st.text_input(
+            "Instructor Password",
+            type="password"
+        )
+
+        if st.button(
+            "Login",
+            type="primary"
+        ):
+
+            if instructor_password == st.secrets["admin"]["password"]:
+
+                st.session_state.instructor_authenticated = True
+
+                st.rerun()
+
+            else:
+
+                st.error(
+                    "Incorrect password."
+                )
+
+        return
+
     supabase: Client = get_supabase()
 
     # =====================================
