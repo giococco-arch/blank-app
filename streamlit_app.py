@@ -86,10 +86,10 @@ def instructor_page():
 
             admin_password = os.getenv("ADMIN_PASSWORD")
 
-if not admin_password:
-    admin_password = st.secrets["admin"]["password"]
+            if not admin_password:
+                admin_password = st.secrets["admin"]["password"]
 
-if instructor_password == admin_password:
+            if instructor_password == admin_password:
 
                 st.session_state.instructor_authenticated = True
 
