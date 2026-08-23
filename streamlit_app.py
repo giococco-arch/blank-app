@@ -513,87 +513,316 @@ def instructor_page():
 
 
     # =====================================
-    # ROUND DESCRIPTION
+    # CURRENT QUESTION — INSTRUCTOR VIEW
     # =====================================
+
+    st.subheader("📝 Current Question")
+
 
     if current_round == 1:
 
-        st.subheader(
-            "Round 1 — The Customer Offer"
-        )
+        st.markdown("""
+### Round 1 — The Customer Offer
 
-        st.write(
-            "€180,000 today versus €220,000 "
-            "in two years with an 8% "
-            "opportunity cost of capital."
-        )
+A customer gives you two payment options:
+
+**A — Take the Cash Now**  
+Receive **€180,000 today**
+
+**B — Wait**  
+Receive **€220,000 in 2 years**
+
+Your opportunity cost of capital is **8%**.
+
+**Which option creates more value today?**
+""")
+
+        with st.expander("🔑 Instructor Answer"):
+
+            pv_a = 180000
+            pv_b = 220000 / (1.08 ** 2)
+
+            st.success("✅ Correct answer: B")
+
+            st.write(
+                f"Option A: **€{pv_a:,.2f}**  \n"
+                f"Option B PV: **€{pv_b:,.2f}**  \n"
+                f"Value advantage of B: **€{pv_b - pv_a:,.2f}**"
+            )
 
 
     elif current_round == 2:
 
-        st.subheader(
-            "Round 2 — Equipment Financing"
-        )
+        st.markdown("""
+### Round 2 — Equipment Financing
 
-        st.write(
-            "Choose the equipment payment plan "
-            "with the lowest present value of cost "
-            "using a 9% required return."
-        )
+You need new equipment. The supplier offers three payment plans:
+
+**A**  
+Pay **€250,000 today**
+
+**B**  
+Pay **€95,000 at the end of each year for 3 years**
+
+**C**  
+Pay **€75,000 today + €65,000 at the end of each year for 3 years**
+
+Your required return is **9%**.
+
+**Which option has the lowest present value of cost?**
+""")
+
+        with st.expander("🔑 Instructor Answer"):
+
+            rate = 0.09
+
+            annuity_factor = (
+                1 - (1 + rate) ** -3
+            ) / rate
+
+            pv_a = 250000
+            pv_b = 95000 * annuity_factor
+            pv_c = 75000 + 65000 * annuity_factor
+
+            st.success("✅ Correct answer: C")
+
+            st.write(
+                f"A: **€{pv_a:,.2f}**  \n"
+                f"B: **€{pv_b:,.2f}**  \n"
+                f"C: **€{pv_c:,.2f}**"
+            )
 
 
     elif current_round == 3:
 
-        st.subheader(
-            "Round 3 — The Bank Battle"
-        )
+        st.markdown("""
+### Round 3 — The Bank Battle
 
-        st.write(
-            "Compare three €200,000 one-year loans "
-            "and identify the financing offer with "
-            "the lowest effective annual rate."
-        )
+Your company needs a **€200,000 one-year working-capital loan**.
+
+**A — BlueBank**  
+**7.8% APR**, compounded monthly
+
+**B — GreenBank**  
+**8.0% effective annual rate**
+
+**C — FlashFinance**  
+**7.7% APR**, compounded quarterly
+
+There are no additional fees.
+
+**Which bank offers the lowest effective annual financing cost?**
+""")
+
+        with st.expander("🔑 Instructor Answer"):
+
+            ear_a = (
+                (1 + 0.078 / 12) ** 12
+                - 1
+            )
+
+            ear_b = 0.08
+
+            ear_c = (
+                (1 + 0.077 / 4) ** 4
+                - 1
+            )
+
+            st.success(
+                "✅ Correct answer: C — FlashFinance"
+            )
+
+            st.write(
+                f"BlueBank EAR: **{ear_a * 100:.3f}%**  \n"
+                f"GreenBank EAR: **{ear_b * 100:.3f}%**  \n"
+                f"FlashFinance EAR: **{ear_c * 100:.3f}%**"
+            )
 
 
     elif current_round == 4:
 
-        st.subheader(
-            "Round 4 — The Growth Contract"
-        )
+        st.markdown("""
+### Round 4 — The Growth Contract
 
-        st.write(
-            "Compare a stable four-year customer "
-            "contract with a contract whose "
-            "payments grow by 6% per year."
-        )
+You are comparing two customer contracts.
+
+**A — Stable Contract**  
+Receive **€100,000 at the end of each year for 4 years**
+
+**B — Growth Contract**  
+Receive **€94,000 in Year 1**, with the payment growing by **6% per year** for 4 years
+
+Your required return is **10%**.
+
+**Which contract creates more value today?**
+""")
+
+        with st.expander("🔑 Instructor Answer"):
+
+            rate = 0.10
+            growth = 0.06
+            years = 4
+
+            pv_a = (
+                100000
+                * (
+                    1 - (1 + rate) ** -years
+                )
+                / rate
+            )
+
+            pv_b = (
+                94000
+                / (rate - growth)
+                * (
+                    1
+                    - (
+                        (1 + growth)
+                        / (1 + rate)
+                    ) ** years
+                )
+            )
+
+            st.success(
+                "✅ Correct answer: B — Growth Contract"
+            )
+
+            st.write(
+                f"Stable Contract: **€{pv_a:,.2f}**  \n"
+                f"Growth Contract: **€{pv_b:,.2f}**  \n"
+                f"Advantage of B: **€{pv_b - pv_a:,.2f}**"
+            )
 
 
     elif current_round == 5:
 
-        st.subheader(
-            "Round 5 — The Rate Shock 📈"
-        )
+        st.markdown("""
+### Round 5 — The Rate Shock 📈
 
-        st.write(
-            "Three projects were worth approximately "
-            "€150,000 at an 8% required return. "
-            "Rates jump to 13%. Which project "
-            "preserves the most value?"
-        )
+At an **8% required return**, all three projects were worth approximately €150,000.
+
+The required return suddenly increases to **13%**.
+
+| Year | A — Fast Cash | B — Balanced | C — Long Bet |
+|---|---:|---:|---:|
+| 1 | €100,000 | €0 | €0 |
+| 2 | €67,000 | €70,000 | €0 |
+| 3 | €0 | €113,400 | €0 |
+| 4 | €0 | €0 | €60,000 |
+| 5 | €0 | €0 | €155,600 |
+
+**Which project preserves the most value after the rate shock?**
+""")
+
+        with st.expander("🔑 Instructor Answer"):
+
+            project_a = [
+                100000,
+                67000,
+                0,
+                0,
+                0
+            ]
+
+            project_b = [
+                0,
+                70000,
+                113400,
+                0,
+                0
+            ]
+
+            project_c = [
+                0,
+                0,
+                0,
+                60000,
+                155600
+            ]
+
+            new_a = pv_cash_flows(
+                project_a,
+                0.13
+            )
+
+            new_b = pv_cash_flows(
+                project_b,
+                0.13
+            )
+
+            new_c = pv_cash_flows(
+                project_c,
+                0.13
+            )
+
+            st.success(
+                "✅ Correct answer: A — Fast Cash"
+            )
+
+            st.write(
+                f"A: **€{new_a:,.2f}**  \n"
+                f"B: **€{new_b:,.2f}**  \n"
+                f"C: **€{new_c:,.2f}**"
+            )
 
 
     elif current_round == 6:
 
-        st.subheader(
-            "Round 6 — The Founder Decision 🏁"
-        )
+        st.markdown("""
+### Round 6 — The Founder Decision 🏁
 
-        st.write(
-            "Sell today, continue building the company, "
-            "or wait two years and sell later. "
-            "Which strategy maximizes shareholder "
-            "value today?"
-        )
+You are the founders of FlowLab.
+
+Your required return is **10%**.
+
+**A — Sell Now**  
+Receive **€2.50 million today**
+
+**B — Keep Building**
+
+| Year | Cash Flow |
+|---|---:|
+| 1 | €500,000 |
+| 2 | €600,000 |
+| 3 | €700,000 |
+| 4 | €800,000 |
+| 5 | €1,600,000 |
+
+**C — Wait & Sell**  
+Receive **€3.00 million in 2 years**, with no distributions before then.
+
+**Which strategy maximizes shareholder value today?**
+""")
+
+        with st.expander("🔑 Instructor Answer"):
+
+            pv_a = 2500000
+
+            pv_b = pv_cash_flows(
+                [
+                    500000,
+                    600000,
+                    700000,
+                    800000,
+                    1600000
+                ],
+                0.10
+            )
+
+            pv_c = (
+                3000000
+                / (1.10 ** 2)
+            )
+
+            st.success(
+                "✅ Correct answer: B — Keep Building"
+            )
+
+            st.write(
+                f"Sell Now: **€{pv_a:,.2f}**  \n"
+                f"Keep Building: **€{pv_b:,.2f}**  \n"
+                f"Wait & Sell: **€{pv_c:,.2f}**"
+            )
 
 
     st.divider()
