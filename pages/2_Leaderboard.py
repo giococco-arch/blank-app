@@ -1,3 +1,4 @@
+import os
 import streamlit as st
 import pandas as pd
 from supabase import create_client
@@ -7,11 +8,15 @@ from supabase import create_client
 # SUPABASE CONNECTION
 # =========================================
 
-url = st.secrets["supabase"]["url"]
-key = st.secrets["supabase"]["key"]
+url = os.getenv("SUPABASE_URL")
+key = os.getenv("SUPABASE_KEY")
+
+# Local Codespaces fallback
+if not url or not key:
+    url = st.secrets["supabase"]["url"]
+    key = st.secrets["supabase"]["key"]
 
 supabase = create_client(url, key)
-
 
 # =========================================
 # HELPER FUNCTIONS
