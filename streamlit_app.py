@@ -1,6 +1,6 @@
+import os
 import streamlit as st
 from supabase import create_client, Client
-
 
 # =========================================
 # PAGE CONFIG
@@ -19,8 +19,12 @@ st.set_page_config(
 
 def get_supabase():
 
-    url = st.secrets["supabase"]["url"]
-    key = st.secrets["supabase"]["key"]
+    url = os.getenv("SUPABASE_URL")
+    key = os.getenv("SUPABASE_KEY")
+
+    if not url or not key:
+        url = st.secrets["supabase"]["url"]
+        key = st.secrets["supabase"]["key"]
 
     return create_client(url, key)
 
@@ -80,7 +84,12 @@ def instructor_page():
             type="primary"
         ):
 
-            if instructor_password == st.secrets["admin"]["password"]:
+            admin_password = os.getenv("ADMIN_PASSWORD")
+
+if not admin_password:
+    admin_password = st.secrets["admin"]["password"]
+
+if instructor_password == admin_password:
 
                 st.session_state.instructor_authenticated = True
 
